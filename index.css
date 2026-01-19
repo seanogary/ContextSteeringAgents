@@ -1,0 +1,30 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* Prevent page scrollbars entirely */
+    overflow: hidden;
+}
+
+/* Make the page a column so the header doesn't push the canvas past the viewport. */
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* limit body to viewport to avoid scrolling */
+}
+
+h1 {
+    margin: 0;
+    padding: 8px 12px;
+}
+
+canvas {
+    display: block;
+    border: 2px solid red;
+    /* Fixed, non-flexing canvas so opening devtools or resizing the window
+       won't change its client size. Matches the CSS size used in resizeCanvas(). */
+    flex: 0 0 auto;
+    width: 1536px;
+    height: 1024px;
+    box-sizing: border-box; /* include border in sizing so it doesn't cause overflow */
+}
