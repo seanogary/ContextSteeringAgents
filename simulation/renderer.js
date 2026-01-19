@@ -15,9 +15,6 @@ export const renderer = {
 
     drawGrid(ctx, display) {
         const {canvasHeight, canvasWidth, resolution} = display;
-        console.log("TYPE:")
-        console.log(typeof display.getTilingDimensions)
-        console.log("TYPE ^^^")
         const tilingDimensions = display.getTilingDimensions(
             canvasHeight,
             canvasWidth,
@@ -47,13 +44,13 @@ export const renderer = {
     colorCell(ctx, display, cell) {
         const { tileSize } = display;
         const [ col, row ] = cell;
+        ctx.fillStyle = 'red';
         ctx.fillRect(
             tileSize * row,
             tileSize * col,
             tileSize,
             tileSize
         );
-        ctx.fillStyle = 'red';
         ctx.fill();
     },
 
@@ -66,5 +63,18 @@ export const renderer = {
             tileSize,
             tileSize
         );
+    },
+
+    renderWorld(ctx, display, world) {
+        world.material.forEach((row, rowI) => {
+            row.forEach((el, colI) => {
+                const cell = [rowI, colI];
+                if (el == 1) {
+                    this.colorCell(ctx, display, cell)
+                } else if (el == 0){
+                    this.clearCell(ctx, display, cell);
+                };
+            })
+        });
     },
 }

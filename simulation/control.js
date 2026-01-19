@@ -36,7 +36,7 @@ document.getElementById("res-up").addEventListener("click", (e) => {
 })
 
 document.getElementById("res-down").addEventListener("click", (e) => {
-    display.resolution = display.resolution <= 0 ? 0 : display.resolution - 1;
+    display.update(display.resolution <= 1 ? 1 : display.resolution - 1);
     toggleSimulation();
 })
 
@@ -61,14 +61,14 @@ document.getElementById("canvas").addEventListener("mousemove", (e) => {
     mouseX = e.clientX - canvas.getBoundingClientRect().left;
     mouseY = e.clientY - canvas.getBoundingClientRect().top;
     display.currentCell = display.getCellFromCoords(mouseX, mouseY);
-    console.log(display.currentCell)
     if (drawing) {
        display.handleDraw();
     }
 });
 
 document.getElementById("canvas").addEventListener("click", () => {
-    world.updateCellState(display.currentCell, 'draw');
+    world.updateCellState(display.currentCell);
+    console.log(world.material);
 });
 
 let drawTimeout;

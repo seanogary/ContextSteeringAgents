@@ -24,25 +24,8 @@ export const world = {
             ? 1 
             : Number(!currState);
         
-        let side = display.tileSize;
-        world.material.forEach((row, rowI) => {
-            row.forEach((el, colI) => {
-                cell = [rowI, colI];
-                let x = display.tileSize * rowI;
-                let y = display.tileSize * colI;
-                // ctx.beginPath();
-                let args = [y, x, side, side];
-                if (el == 1) {
-                    renderer.colorCell(ctx, display, cell)
-                    // ctx.rect(...args);
-                    // ctx.fillStyle = 'red';
-                    // ctx.fill();
-                } else if (el == 0){
-                    renderer.clearCell(ctx, display, cell);
-                };
-            })
-        });
-    renderer.drawGrid(ctx, display);
+        renderer.renderWorld(ctx, display, world); 
+        renderer.drawGrid(ctx, display);
     
     }
 }

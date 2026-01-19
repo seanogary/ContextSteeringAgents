@@ -47,6 +47,7 @@ export const display = {
         this.resolution = newResolution;
         this.tileDimensions = this.getTilingDimensions(testHeight, testWidth, newResolution);
         this.tileSize = this.canvasHeight / this.tileDimensions[0];
+        console.log(this.tileSize);
     },
     getTilingDimensions(height, width, resolution) {
         let gcdValue = gcd(height, width);
