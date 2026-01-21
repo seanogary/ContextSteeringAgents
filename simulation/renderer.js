@@ -1,5 +1,3 @@
-import { display } from "../world/display.js";
-
 export const renderer = {
     drawLine(ctx, start, end) {
         ctx.beginPath();
@@ -76,5 +74,20 @@ export const renderer = {
                 };
             })
         });
+    },
+
+    drawMaterial(ctx, display, world) {
+
+
+
+        world.material.forEach((row, rowI) => {
+            row.forEach((cell, colI) => {
+                this.colorCell(ctx, display, [colI, rowI]);
+            })
+        })
+    },
+
+    drawAgents(ctx, world) {
+        // console.log("Agents drawn");
     },
 }

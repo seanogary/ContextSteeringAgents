@@ -1,4 +1,7 @@
-class SteeringAgent {
+import { psi_default, g_default } from "../constants.js";
+import { display } from "../world/display.js";
+
+export class SteeringAgent {
     constructor(x = 50, y = 50, size = 40, color = 'rgb(200,0,0)', numReceptors = 8) {
         this.pos = { x, y };
         this.vel = { x: 1, y: 0.5 };
@@ -33,4 +36,3 @@ class SteeringAgent {
         ctx.restore();
     }
 }
-
