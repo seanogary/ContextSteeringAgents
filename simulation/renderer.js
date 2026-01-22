@@ -77,9 +77,6 @@ export const renderer = {
     },
 
     drawMaterial(ctx, display, world) {
-
-
-
         world.material.forEach((row, rowI) => {
             row.forEach((cell, colI) => {
                 this.colorCell(ctx, display, [colI, rowI]);

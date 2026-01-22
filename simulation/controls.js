@@ -14,7 +14,10 @@ export const controls = {
     drawing: false,
     mousedown: false,
     currentCell: null,
+    currentCellVal: null,
     isPainted: null,
+    activeMode: "DDAVisualizationMode",
+
     draw() {
         if (!this.animating) return;
         display.resizeCanvas();
@@ -36,18 +39,21 @@ export const controls = {
         simulation.stop()
     },
 
+    isEnteringNewCell(x, y) {
+        return !deepEqual(this.currentCell, display.getCellFromCoords(x, y)) 
+    },
+
     registerMousemove(x, y) {
-        if (
-            !deepEqual(this.currentCell, display.getCellFromCoords(x,y))
-            &&
-            display.currentCell == null
-        ) {
-            this.currentCell = display.getCellFromCoords(x,y);
+        if (modes[this.activeMode].mousemove) {
+            Object.assign(this, modes[this.activeMode].mousemove(x, y)); 
         }
 
-        const currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
+        if (this.isEnteringNewCell(x,y)) {
+            this.currentCell = display.getCellFromCoords(x,y);
+            this.currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
+        }
 
-        if (this.drawing && !currentCellVal) {
+        if (this.drawing && !this.currentCellVal) {
             this.colorCell();
         }
 
@@ -68,9 +74,8 @@ export const controls = {
     },
 
     registerMousedown() {
-        let currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
         this.mousedown = true;
-        if (!currentCellVal) {
+        if (!this.currentCellVal) {
             this.colorCell();
             this.isPainted = true;
         } else {
@@ -79,8 +84,7 @@ export const controls = {
     },
 
     registerMouseup() {
-        const currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
-        if (currentCellVal && !this.drawing && !this.isPainted) {
+        if (this.currentCellVal && !this.drawing && !this.isPainted) {
             this.colorCell();
         }
         this.currentMousePosition = null;
@@ -108,8 +112,22 @@ export const controls = {
         display.clear();
         display.resizeCanvas(); /// WTF WTF WTF (THIS SOLVES A PROBLEM)
         renderer.drawGrid(ctx, display);
+    },
+
+    registerModeSelection(mode) {
+        console.log(mode)
+    },
+}
+
+const modes = {
+    DDAVisualizationMode: {
+        mousemove () {
+            return {};
+        }
     }
 }
+
+
 
 
 // function draw() {

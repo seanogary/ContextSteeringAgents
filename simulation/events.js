@@ -39,3 +39,10 @@ document.getElementById("canvas").addEventListener("mousedown", () => {
 document.getElementById("canvas").addEventListener("mouseup", (e) => {
     controls.registerMouseup();
 });
+
+
+// mode selection
+const form = document.getElementById("mode-selector");
+form.addEventListener("change", (e) => {
+    controls.registerModeSelection(e.target.id);
+})

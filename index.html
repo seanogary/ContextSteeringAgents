@@ -21,6 +21,18 @@
     <div id="sim-state">
         Not running
     </div>
+    <br>
+    <div>Select Mode: </div>
+    <form id="mode-selector">
+        <input type="radio" id="DDA-viz" name="mode">
+        <label for="DDA-viz">Digital Differential Analyzer (DDA)</label>
+        <br>
+        <input type="radio" id="ray-casting" name="mode">
+        <label for="ray-casting">Ray Casting with DDA</label>
+        <br>
+        <input type="radio" id="context-steering-agents" name="mode">
+        <label for="context-steering-agents">Context Steering Agents</label>
+    </form>
 </body>
 <script type="module" src="main.js"></script>
 </html>
