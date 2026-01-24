@@ -33,11 +33,11 @@ document.getElementById("canvas").addEventListener("mousemove", (e) => {
 });
 
 document.getElementById("canvas").addEventListener("mousedown", () => {
-    controls.registerMousedown();
+    controls.registerMousedown(mouseX, mouseY);
 });
 
 document.getElementById("canvas").addEventListener("mouseup", (e) => {
-    controls.registerMouseup();
+    controls.registerMouseup(mouseX, mouseY);
 });
 
 

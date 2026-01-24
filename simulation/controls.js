@@ -2,8 +2,8 @@ import { display, ctx } from '../world/display.js';
 import { world } from '../world/world.js';
 import { renderer } from './renderer.js';
 import { simulation } from './simulation.js'
-import { DDAVisualizationMode } from '../modes/DDAMode.js';
-
+import { MaterialPaintMode } from '../modes/MaterialPaintMode.js';
+import { DDAVisualizationMode } from '../modes/DDAMode.js'
 export const controls = {
     animating: false,
     animationId: null,
@@ -31,15 +31,15 @@ export const controls = {
     },
 
     registerMousemove(x, y) {
-        modes[this.activeMode].mousemove?.(x, y);
+        modes[this.activeMode]?.mousemove?.(x, y);
     },
 
-    registerMousedown() {
-        modes[this.activeMode].mousedown?.();
+    registerMousedown(x,y) {
+        modes[this.activeMode]?.mousedown?.(x,y);
     },
 
-    registerMouseup() {
-        modes[this.activeMode].mouseup?.();
+    registerMouseup(x,y) {
+        modes[this.activeMode]?.mouseup?.(x,y);
     },
 
     init() {
@@ -59,11 +59,21 @@ export const controls = {
     },
 
     registerModeSelection(mode) {
-        console.log(mode)
+        console.log(mode);
+        this.activeMode = modeMap[mode];
+        console.log(this.activeMode);
     },
 }
 
 
 const modes = {
     DDAVisualizationMode: DDAVisualizationMode, 
+    RayCastingMode: null,
+    ContextSteeringMode: MaterialPaintMode,
+}
+
+const modeMap = {
+    "DDA-viz": "DDAVisualizationMode",
+    "ray-casting": "RayCastingMode",
+    "context-steering-agents": "ContextSteeringMode",
 }

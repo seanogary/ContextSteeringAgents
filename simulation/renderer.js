@@ -1,4 +1,9 @@
 export const renderer = {
+
+    overlaidGeometry: {
+
+    },
+
     drawLine(ctx, start, end) {
         ctx.beginPath();
         ctx.moveTo(start.x, start.y);
@@ -36,6 +41,13 @@ export const renderer = {
                 {x: 0, y: tileSize * i },
                 {x: canvasWidth, y: tileSize * i }
             );
+        }
+        this.drawOverlaidGeometry(ctx);
+    },
+
+    drawOverlaidGeometry(ctx) {
+        if (this.overlaidGeometry.line) {
+            this.drawLine(ctx, this.overlaidGeometry.line.start, this.overlaidGeometry.line.end);
         }
     },
 
