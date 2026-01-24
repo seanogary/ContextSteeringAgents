@@ -11,9 +11,9 @@ export const renderer = {
         ctx.stroke();
     },
 
-    plotPoint(point, ctx) {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(point.x -5, point.y - 5, 10, 10);
+    plotPoint(point, ctx, color) {
+        ctx.fillStyle = color;
+        ctx.fillRect(point.x - 2, point.y - 2, 4, 4);
     },
 
     drawGrid(ctx, display) {
@@ -48,6 +48,18 @@ export const renderer = {
     drawOverlaidGeometry(ctx) {
         if (this.overlaidGeometry.line) {
             this.drawLine(ctx, this.overlaidGeometry.line.start, this.overlaidGeometry.line.end);
+        }
+
+        if (this.overlaidGeometry.verticalIntersections) {
+            this.overlaidGeometry.verticalIntersections.forEach((point) => {
+                this.plotPoint(point, ctx, "red");
+            })
+        }
+
+        if (this.overlaidGeometry.horizontalIntersections) {
+            this.overlaidGeometry.horizontalIntersections.forEach((point) => {
+                this.plotPoint(point, ctx, "blue")
+            })
         }
     },
 
