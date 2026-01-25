@@ -4,10 +4,11 @@ import { renderer } from './renderer.js';
 import { simulation } from './simulation.js'
 import { MaterialPaintMode } from '../modes/MaterialPaintMode.js';
 import { DDAVisualizationMode } from '../modes/DDAMode.js'
+import { RayCastingMode } from '../modes/RayCastingMode.js';
 export const controls = {
     animating: false,
     animationId: null,
-    activeMode: "DDAVisualizationMode",
+    activeMode: null,
 
     draw() {
         if (!this.animating) return;
@@ -63,12 +64,12 @@ export const controls = {
         this.activeMode = modeMap[mode];
         console.log(this.activeMode);
     },
-}
 
+}
 
 const modes = {
     DDAVisualizationMode: DDAVisualizationMode, 
-    RayCastingMode: null,
+    RayCastingMode: RayCastingMode,
     ContextSteeringMode: MaterialPaintMode,
 }
 
