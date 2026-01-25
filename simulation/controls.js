@@ -5,6 +5,7 @@ import { simulation } from './simulation.js'
 import { MaterialPaintMode } from '../modes/MaterialPaintMode.js';
 import { DDAVisualizationMode } from '../modes/DDAMode.js'
 import { RayCastingMode } from '../modes/RayCastingMode.js';
+import { ContextSteeringMode } from '../modes/ContextSteeringMode.js';
 export const controls = {
     animating: false,
     animationId: null,
@@ -70,7 +71,7 @@ export const controls = {
 const modes = {
     DDAVisualizationMode: DDAVisualizationMode, 
     RayCastingMode: RayCastingMode,
-    ContextSteeringMode: MaterialPaintMode,
+    ContextSteeringMode: ContextSteeringMode,
 }
 
 const modeMap = {

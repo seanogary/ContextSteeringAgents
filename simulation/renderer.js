@@ -1,6 +1,6 @@
 export const renderer = {
 
-    overlaidGeometry: { 
+    overlaidGeometry: {
     },
 
     drawLine(ctx, start, end) {
@@ -110,6 +110,7 @@ export const renderer = {
                 };
             })
         });
+        this.drawAgents(ctx, world);
     },
 
     drawMaterial(ctx, display, world) {
@@ -121,5 +122,12 @@ export const renderer = {
     },
 
     drawAgents(ctx, world) {
+        console.log("HEY")
+        if (world.agents) {
+            console.log("YEP")
+            world.agents.forEach((agent) => {
+                this.plotPoint(agent.pos, ctx)
+            })
+        }
     },
 }

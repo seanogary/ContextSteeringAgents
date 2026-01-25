@@ -2,7 +2,7 @@ import { psi_default, g_default } from "../constants.js";
 import { display } from "../world/display.js";
 
 export class SteeringAgent {
-    constructor(x = 50, y = 50, size = 40, color = 'rgb(200,0,0)', numReceptors = 8) {
+    constructor(x = 500, y = 500, size = 40, color = 'rgb(200,0,0)', numReceptors = 8) {
         this.pos = { x, y };
         this.vel = { x: 1, y: 0.5 };
         this.width = size;

@@ -3,6 +3,9 @@ export const simulation = {
     numFrames: 0,
     renderFrame(ctx, display, world, renderer) {
         display.clear();
+        world.agents.forEach(agent => {
+            agent.update(); 
+        });
         renderer.renderWorld(ctx, display,world);
         renderer.drawGrid(ctx, display);
         renderer.drawAgents(ctx, display ,world);

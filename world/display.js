@@ -57,6 +57,15 @@ export const display = {
         ctx.clearRect(0, 0, canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight);
     },
 
+    // Back-compat helpers for older code expecting display.width() / display.height()
+    width() {
+        return this.canvasWidth;
+    },
+
+    height() {
+        return this.canvasHeight;
+    },
+
     getTilingDimensions(height, width, resolution) {
         let gcdValue = gcd(height, width);
 
