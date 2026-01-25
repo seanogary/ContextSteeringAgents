@@ -2,19 +2,13 @@ import { display, ctx } from '../world/display.js';
 import { world } from '../world/world.js';
 import { renderer } from './renderer.js';
 import { simulation } from './simulation.js'
-import { geometry } from '../core/geometry.js';
-import { deepEqual } from '../core/core.js';
-
+import { MaterialPaintMode } from '../modes/MaterialPaintMode.js';
+import { DDAVisualizationMode } from '../modes/DDAMode.js'
 export const controls = {
     animating: false,
     animationId: null,
-    movingMouse: null,
-    currentMousePosition: null,
-    mouseTravelDistance: 0,
-    drawing: false,
-    mousedown: false,
-    currentCell: null,
-    isPainted: null,
+    activeMode: "DDAVisualizationMode",
+
     draw() {
         if (!this.animating) return;
         display.resizeCanvas();
@@ -37,61 +31,15 @@ export const controls = {
     },
 
     registerMousemove(x, y) {
-        if (
-            !deepEqual(this.currentCell, display.getCellFromCoords(x,y))
-            &&
-            display.currentCell == null
-        ) {
-            this.currentCell = display.getCellFromCoords(x,y);
-        }
-
-        const currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
-
-        if (this.drawing && !currentCellVal) {
-            this.colorCell();
-        }
-
-        if (this.currentMousePosition && this.mousedown) {
-            this.mouseTravelDistance = 
-            this.mouseTravelDistance + geometry.distance(
-                this.currentMousePosition,
-                [x, y]
-            );
-        }
-
-
-        if (this.mouseTravelDistance > display.canvasHeight/display.tileDimensions[0]) {
-            this.drawing = true;
-        }
-
-        this.currentMousePosition = [x,y];
+        modes[this.activeMode]?.mousemove?.(x, y);
     },
 
-    registerMousedown() {
-        let currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
-        this.mousedown = true;
-        if (!currentCellVal) {
-            this.colorCell();
-            this.isPainted = true;
-        } else {
-            this.isPainted = false;
-        }
+    registerMousedown(x,y) {
+        modes[this.activeMode]?.mousedown?.(x,y);
     },
 
-    registerMouseup() {
-        const currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
-        if (currentCellVal && !this.drawing && !this.isPainted) {
-            this.colorCell();
-        }
-        this.currentMousePosition = null;
-        this.mouseTravelDistance = 0;
-        this.drawing = false;
-        this.mousedown = false;
-        // this.colorCell();
-    },
-
-    colorCell(){
-        world.updateCellState(this.currentCell, this.drawing ? 'draw' : null);
+    registerMouseup(x,y) {
+        modes[this.activeMode]?.mouseup?.(x,y);
     },
 
     init() {
@@ -106,19 +54,26 @@ export const controls = {
         if (type === 'dec') display.decreaseResolution(inc);
         world.init(...display.tileDimensions);
         display.clear();
-        display.resizeCanvas(); /// WTF WTF WTF (THIS SOLVES A PROBLEM)
+        display.resizeCanvas(); 
         renderer.drawGrid(ctx, display);
-    }
+    },
+
+    registerModeSelection(mode) {
+        console.log(mode);
+        this.activeMode = modeMap[mode];
+        console.log(this.activeMode);
+    },
 }
 
 
-// function draw() {
-//     if (!display.animating) return;
-//     clear();
-//     renderer.drawGrid(ctx, display)
-//     agents.forEach(s => {
-//         s.update();
-//         s.draw(ctx);
-//     });
-//     animationId = requestAnimationFrame(draw); // save the ID here too
-// }
+const modes = {
+    DDAVisualizationMode: DDAVisualizationMode, 
+    RayCastingMode: null,
+    ContextSteeringMode: MaterialPaintMode,
+}
+
+const modeMap = {
+    "DDA-viz": "DDAVisualizationMode",
+    "ray-casting": "RayCastingMode",
+    "context-steering-agents": "ContextSteeringMode",
+}

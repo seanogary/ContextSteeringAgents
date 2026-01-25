@@ -1,4 +1,14 @@
 export const renderer = {
+
+    overlaidGeometry: {
+        cellGroup: [
+            [0,0],
+            [1,1],
+            [2,2],
+            [3,3]
+        ]
+    },
+
     drawLine(ctx, start, end) {
         ctx.beginPath();
         ctx.moveTo(start.x, start.y);
@@ -6,12 +16,15 @@ export const renderer = {
         ctx.stroke();
     },
 
-    plotPoint(point, ctx) {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(point.x -5, point.y - 5, 10, 10);
+    plotPoint(point, ctx, color) {
+        ctx.fillStyle = color;
+        ctx.fillRect(point.x - 2, point.y - 2, 4, 4);
     },
 
     drawGrid(ctx, display) {
+        console.log(this.overlaidGeometry.cellGroup)
+
+        this.drawOverlaidGeometry(ctx, display);
         const {canvasHeight, canvasWidth, resolution} = display;
         const tilingDimensions = display.getTilingDimensions(
             canvasHeight,
@@ -39,10 +52,41 @@ export const renderer = {
         }
     },
 
-    colorCell(ctx, display, cell) {
+    drawOverlaidGeometry(ctx, display) {
+        if (this.overlaidGeometry.cellGroup) {
+            console.log("Yes");
+            this.renderCellGroup(this.overlaidGeometry.cellGroup, ctx, display);
+        }
+
+        if (this.overlaidGeometry.verticalIntersections) {
+            this.overlaidGeometry.verticalIntersections.forEach((point) => {
+                this.plotPoint(point, ctx, "red");
+            })
+        }
+
+        if (this.overlaidGeometry.horizontalIntersections) {
+            this.overlaidGeometry.horizontalIntersections.forEach((point) => {
+                this.plotPoint(point, ctx, "blue")
+            })
+        }
+        
+        if (this.overlaidGeometry.line) {
+            this.drawLine(ctx, this.overlaidGeometry.line.start, this.overlaidGeometry.line.end);
+        }
+
+
+    },
+
+    renderCellGroup(cellGroup, ctx, display) {
+        cellGroup.forEach((cell) => {
+            this.colorCell(ctx, display, cell, "grey");
+        })
+    },
+
+    colorCell(ctx, display, cell, color="red") {
         const { tileSize } = display;
         const [ col, row ] = cell;
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = color;
         ctx.fillRect(
             tileSize * row,
             tileSize * col,
@@ -77,9 +121,6 @@ export const renderer = {
     },
 
     drawMaterial(ctx, display, world) {
-
-
-
         world.material.forEach((row, rowI) => {
             row.forEach((cell, colI) => {
                 this.colorCell(ctx, display, [colI, rowI]);

@@ -33,9 +33,16 @@ document.getElementById("canvas").addEventListener("mousemove", (e) => {
 });
 
 document.getElementById("canvas").addEventListener("mousedown", () => {
-    controls.registerMousedown();
+    controls.registerMousedown(mouseX, mouseY);
 });
 
 document.getElementById("canvas").addEventListener("mouseup", (e) => {
-    controls.registerMouseup();
+    controls.registerMouseup(mouseX, mouseY);
 });
+
+
+// mode selection
+const form = document.getElementById("mode-selector");
+form.addEventListener("change", (e) => {
+    controls.registerModeSelection(e.target.id);
+})
