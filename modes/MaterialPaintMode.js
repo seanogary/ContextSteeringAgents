@@ -21,6 +21,7 @@ export const MaterialPaintMode = {
   },
 
   mousemove(x, y) {
+    
     if (this.isEnteringNewCell(x, y)) {
       this.currentCell = display.getCellFromCoords(x, y);
       this.currentCellVal = world.getCellState(this.currentCell.x, this.currentCell.y);
