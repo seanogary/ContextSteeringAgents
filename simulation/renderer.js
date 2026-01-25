@@ -1,12 +1,6 @@
 export const renderer = {
 
-    overlaidGeometry: {
-        cellGroup: [
-            [0,0],
-            [1,1],
-            [2,2],
-            [3,3]
-        ]
+    overlaidGeometry: { 
     },
 
     drawLine(ctx, start, end) {
@@ -18,12 +12,11 @@ export const renderer = {
 
     plotPoint(point, ctx, color) {
         ctx.fillStyle = color;
-        ctx.fillRect(point.x - 2, point.y - 2, 4, 4);
+        ctx.fillRect(point.x - 4, point.y - 4, 8, 8);
     },
 
     drawGrid(ctx, display) {
-        console.log(this.overlaidGeometry.cellGroup)
-
+        // display.resizeCanvas();
         this.drawOverlaidGeometry(ctx, display);
         const {canvasHeight, canvasWidth, resolution} = display;
         const tilingDimensions = display.getTilingDimensions(
@@ -54,7 +47,6 @@ export const renderer = {
 
     drawOverlaidGeometry(ctx, display) {
         if (this.overlaidGeometry.cellGroup) {
-            console.log("Yes");
             this.renderCellGroup(this.overlaidGeometry.cellGroup, ctx, display);
         }
 
@@ -129,6 +121,5 @@ export const renderer = {
     },
 
     drawAgents(ctx, world) {
-        // console.log("Agents drawn");
     },
 }

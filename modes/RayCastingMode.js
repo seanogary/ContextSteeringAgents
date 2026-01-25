@@ -5,7 +5,7 @@ import { deepEqual } from '../core/core.js';
 import { renderer } from '../simulation/renderer.js';
 import { DDA } from '../core/dda.js';
 
-export const DDAVisualizationMode = {
+export const RayCastingMode = {
     lineStart: null,
     lineEnd: null,
     mouseDown: false,
@@ -20,6 +20,7 @@ export const DDAVisualizationMode = {
         delete renderer.overlaidGeometry.cellGroup;
         display.resizeCanvas();
         display.clear();
+        renderer.renderWorld(ctx, display, world);
         renderer.drawGrid(ctx, display);
     },
 
@@ -38,16 +39,14 @@ export const DDAVisualizationMode = {
             }
             display.resizeCanvas();
             display.clear();
-
+            renderer.renderWorld(ctx, display, world);
             renderer.drawGrid(ctx, display);
 
-            renderer.overlaidGeometry.cellGroup = DDA.getCells(this.lineStart, this.lineEnd);
-
+            renderer.overlaidGeometry.cellGroup = DDA.castRay(this.lineStart, this.lineEnd);
             renderer.overlaidGeometry.verticalIntersections = DDA.getVerticalIntersections(
                 this.lineStart,
                 this.lineEnd
             );
-
             renderer.overlaidGeometry.horizontalIntersections = DDA.getHorizontalIntersections(
                 this.lineStart,
                 this.lineEnd
