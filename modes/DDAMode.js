@@ -35,7 +35,10 @@ export const DDAVisualizationMode = {
                 end: this.lineEnd,
             }
             display.clear();
+
             renderer.drawGrid(ctx, display);
+
+            renderer.overlaidGeometry.cellGroup = DDA.getCells(this.lineStart, this.lineEnd);
 
             renderer.overlaidGeometry.verticalIntersections = DDA.getVerticalIntersections(
                 this.lineStart,

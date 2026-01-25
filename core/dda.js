@@ -56,4 +56,47 @@ export const DDA = {
         return intersections;
     },
 
+    getCells(start, end) {
+        const x0 = start.x / display.tileSize;
+        const y0 = start.y / display.tileSize;
+        const length = geometry.distance(start, end) / display.tileSize;
+        const uX = (end.x - start.x) / geometry.distance(start, end);
+        const uY = (end.y - start.y) / geometry.distance(start, end);
+        let nV = 0;
+        let nH = 0;
+        let n = 0;
+        const currCellObj = display.getCellFromCoords(start.x, start.y);
+        let currCell = [currCellObj.y, currCellObj.x]
+        const stepDirX = Math.sign(end.x - start.x);
+        const stepDirY = Math.sign(end.y - start.y);
+        let cells = [currCell];
+        while (true) {
+            const nextGridY = stepDirY > 0 ? Math.floor(y0) + 1 + nH : Math.ceil(y0) - 1 - nH;
+            const nextGridX = stepDirX > 0 ? Math.floor(x0) + 1 + nV : Math.ceil(x0) - 1 - nV;
+            const deltaY = (nextGridY - y0) / uY;
+            const deltaX = (nextGridX - x0) / uX; 
+        
+            if (Math.abs(deltaX) > length && Math.abs(deltaY) > length) break;
+            if (n > 100) break; 
+        
+            let newCell;
+            if (Math.abs(deltaX) < Math.abs(deltaY)) { // vertical hit - step in X
+                newCell = [
+                    currCell[0],
+                    currCell[1] + stepDirX
+                ]
+                nV += 1;
+            } else { // horizontal hit - step in Y
+                newCell = [
+                    currCell[0] + stepDirY,
+                    currCell[1]
+                ]
+                nH += 1;
+            }
+            cells.push(newCell);
+            currCell = newCell;
+            n += 1;
+        }
+        return cells;
+    }
 }

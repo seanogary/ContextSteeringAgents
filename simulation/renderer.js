@@ -1,7 +1,12 @@
 export const renderer = {
 
     overlaidGeometry: {
-
+        cellGroup: [
+            [0,0],
+            [1,1],
+            [2,2],
+            [3,3]
+        ]
     },
 
     drawLine(ctx, start, end) {
@@ -17,6 +22,9 @@ export const renderer = {
     },
 
     drawGrid(ctx, display) {
+        console.log(this.overlaidGeometry.cellGroup)
+
+        this.drawOverlaidGeometry(ctx, display);
         const {canvasHeight, canvasWidth, resolution} = display;
         const tilingDimensions = display.getTilingDimensions(
             canvasHeight,
@@ -42,12 +50,12 @@ export const renderer = {
                 {x: canvasWidth, y: tileSize * i }
             );
         }
-        this.drawOverlaidGeometry(ctx);
     },
 
-    drawOverlaidGeometry(ctx) {
-        if (this.overlaidGeometry.line) {
-            this.drawLine(ctx, this.overlaidGeometry.line.start, this.overlaidGeometry.line.end);
+    drawOverlaidGeometry(ctx, display) {
+        if (this.overlaidGeometry.cellGroup) {
+            console.log("Yes");
+            this.renderCellGroup(this.overlaidGeometry.cellGroup, ctx, display);
         }
 
         if (this.overlaidGeometry.verticalIntersections) {
@@ -61,12 +69,24 @@ export const renderer = {
                 this.plotPoint(point, ctx, "blue")
             })
         }
+        
+        if (this.overlaidGeometry.line) {
+            this.drawLine(ctx, this.overlaidGeometry.line.start, this.overlaidGeometry.line.end);
+        }
+
+
     },
 
-    colorCell(ctx, display, cell) {
+    renderCellGroup(cellGroup, ctx, display) {
+        cellGroup.forEach((cell) => {
+            this.colorCell(ctx, display, cell, "grey");
+        })
+    },
+
+    colorCell(ctx, display, cell, color="red") {
         const { tileSize } = display;
         const [ col, row ] = cell;
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = color;
         ctx.fillRect(
             tileSize * row,
             tileSize * col,
