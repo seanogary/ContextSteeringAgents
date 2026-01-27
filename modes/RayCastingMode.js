@@ -42,15 +42,19 @@ export const RayCastingMode = {
             renderer.renderWorld(ctx, display, world);
             renderer.drawGrid(ctx, display);
 
-            renderer.overlaidGeometry.cellGroup = DDA.castRay(this.lineStart, this.lineEnd);
+            renderer.overlaidGeometry.cellGroup = DDA.castRay(this.lineStart, this.lineEnd, display, world).cells;
             renderer.overlaidGeometry.verticalIntersections = DDA.getVerticalIntersections(
                 this.lineStart,
-                this.lineEnd
+                this.lineEnd,
+                display
             );
             renderer.overlaidGeometry.horizontalIntersections = DDA.getHorizontalIntersections(
                 this.lineStart,
-                this.lineEnd
+                this.lineEnd,
+                display
             );
+            renderer.drawOverlaidGeometry(ctx, display);
+            renderer.drawAgents(ctx, world);
         }
     }
 }

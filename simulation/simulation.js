@@ -1,3 +1,4 @@
+import { renderer } from "./renderer.js";
 
 export const simulation = {
     numFrames: 0,
@@ -10,7 +11,7 @@ export const simulation = {
         renderer.drawGrid(ctx, display);
         renderer.drawAgents(ctx, display ,world);
         this.numFrames += 1;
-        this.print();
+        // this.print();
     },
 
     print() {
@@ -22,6 +23,7 @@ export const simulation = {
         console.log("SIMULATION STARTED");
         console.clear();
         this.numFrames = 0;
+        renderer.overlaidGeometry.cellGroup = [];
     },
 
     stop() {

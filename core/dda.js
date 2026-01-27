@@ -1,9 +1,7 @@
 import { geometry } from "./geometry.js";
-import { display } from "../world/display.js";
-import { world } from "../world/world.js";
 
 export const DDA = {
-    getVerticalIntersections(start, end) {
+    getVerticalIntersections(start, end, display) {
         const x0 = start.x / display.tileSize;
         const y0 = start.y / display.tileSize;
         const length = geometry.distance(start, end) / display.tileSize;
@@ -30,7 +28,7 @@ export const DDA = {
         return intersections;
     },
 
-    getHorizontalIntersections(start, end) {
+    getHorizontalIntersections(start, end, display) {
         const x0 = start.x / display.tileSize;
         const y0 = start.y / display.tileSize;
         const length = geometry.distance(start, end) / display.tileSize;
@@ -57,7 +55,7 @@ export const DDA = {
         return intersections;
     },
 
-    getCells(start, end) {
+    getCells(start, end, display) {
         const x0 = start.x / display.tileSize;
         const y0 = start.y / display.tileSize;
         const length = geometry.distance(start, end) / display.tileSize;
@@ -101,10 +99,9 @@ export const DDA = {
         return cells;
     },
 
-    castRay(start, end) {
+    castRay(start, end, display, world) {
         const x0 = start.x / display.tileSize;
         const y0 = start.y / display.tileSize;
-        const length = geometry.distance(start, end) / display.tileSize;
         const uX = (end.x - start.x) / geometry.distance(start, end);
         const uY = (end.y - start.y) / geometry.distance(start, end);
         let nV = 0;
@@ -115,13 +112,13 @@ export const DDA = {
         const stepDirX = Math.sign(end.x - start.x);
         const stepDirY = Math.sign(end.y - start.y);
         let cells = [currCell];
+        let distance;
         while (true) {
             const nextGridY = stepDirY > 0 ? Math.floor(y0) + 1 + nH : Math.ceil(y0) - 1 - nH;
             const nextGridX = stepDirX > 0 ? Math.floor(x0) + 1 + nV : Math.ceil(x0) - 1 - nV;
             const deltaY = (nextGridY - y0) / uY;
-            const deltaX = (nextGridX - x0) / uX; 
+            const deltaX = (nextGridX - x0) / uX;
         
-            if (Math.abs(deltaX) > length && Math.abs(deltaY) > length) break;
             if (n > 100) break; 
             
             let newCell;
@@ -139,15 +136,27 @@ export const DDA = {
                 nH += 1;
             }
 
+            distance = Math.abs(deltaX) < Math.abs(deltaY) ? Math.abs(deltaX) : Math.abs(deltaY);
+
+            // Check out of bounds
+            if (!world.material || newCell[0] < 0 || newCell[0] >= world.material.length || 
+                newCell[1] < 0 || newCell[1] >= world.material[0].length) {
+                return {
+                    cells: cells,
+                    distance: distance,
+                };
+            }
+
             if (world.getCellState(newCell[1], newCell[0]) == 1) {
-                console.log("Obstacle detected");
-                return cells;
+                return {
+                    cells: cells,
+                    distance: distance,
+                };
             }
 
             cells.push(newCell);
             currCell = newCell;
             n += 1;
         }
-        return cells;
     },
 }

@@ -13,6 +13,10 @@ export const world = {
     },
 
     getCellState(cellX, cellY) {
+        if (!world.material || cellY < 0 || cellY >= world.material.length || 
+            cellX < 0 || cellX >= world.material[0].length) {
+            return 1; // Treat out of bounds as obstacle
+        }
         return world.material[cellY][cellX];
     },
 

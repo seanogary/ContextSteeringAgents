@@ -36,3 +36,11 @@ export function deepEqual(obj1, obj2) {
   
   return true;
 }
+
+export function lerpAngle(start, end, t) {
+    let diff = end - start;
+    // Handle wraparound (shortest path)
+    while (diff > Math.PI) diff -= 2 * Math.PI;
+    while (diff < -Math.PI) diff += 2 * Math.PI;
+    return start + diff * t;
+}

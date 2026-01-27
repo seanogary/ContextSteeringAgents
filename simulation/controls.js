@@ -64,6 +64,9 @@ export const controls = {
         console.log(mode);
         this.activeMode = modeMap[mode];
         console.log(this.activeMode);
+        if (mode === "context-steering-agents") {
+            renderer.overlaidGeometry.agentRays = {};
+        }
     },
 
 }
@@ -72,10 +75,12 @@ const modes = {
     DDAVisualizationMode: DDAVisualizationMode, 
     RayCastingMode: RayCastingMode,
     ContextSteeringMode: ContextSteeringMode,
+    MaterialPaintMode: MaterialPaintMode,
 }
 
 const modeMap = {
     "DDA-viz": "DDAVisualizationMode",
     "ray-casting": "RayCastingMode",
     "context-steering-agents": "ContextSteeringMode",
+    "material-paint-mode": "MaterialPaintMode",
 }

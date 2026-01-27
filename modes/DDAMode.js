@@ -41,17 +41,21 @@ export const DDAVisualizationMode = {
 
             renderer.drawGrid(ctx, display);
 
-            renderer.overlaidGeometry.cellGroup = DDA.getCells(this.lineStart, this.lineEnd);
+            renderer.overlaidGeometry.cellGroup = DDA.getCells(this.lineStart, this.lineEnd, display);
 
             renderer.overlaidGeometry.verticalIntersections = DDA.getVerticalIntersections(
                 this.lineStart,
-                this.lineEnd
+                this.lineEnd,
+                display
             );
 
             renderer.overlaidGeometry.horizontalIntersections = DDA.getHorizontalIntersections(
                 this.lineStart,
-                this.lineEnd
+                this.lineEnd,
+                display
             );
+
+            renderer.drawOverlaidGeometry(ctx, display);
         }
     }
 }

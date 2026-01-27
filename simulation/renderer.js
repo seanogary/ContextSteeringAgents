@@ -1,6 +1,7 @@
 export const renderer = {
 
     overlaidGeometry: {
+        agentRays: {},
     },
 
     drawLine(ctx, start, end) {
@@ -17,7 +18,6 @@ export const renderer = {
 
     drawGrid(ctx, display) {
         // display.resizeCanvas();
-        this.drawOverlaidGeometry(ctx, display);
         const {canvasHeight, canvasWidth, resolution} = display;
         const tilingDimensions = display.getTilingDimensions(
             canvasHeight,
@@ -66,12 +66,19 @@ export const renderer = {
             this.drawLine(ctx, this.overlaidGeometry.line.start, this.overlaidGeometry.line.end);
         }
 
+        if (this.overlaidGeometry.agentRays) {
+            Object.entries(this.overlaidGeometry.agentRays).forEach(([key, rays]) => {
+                rays.forEach(cellGroup => {
+                    this.renderCellGroup(cellGroup, ctx, display);
+                });
+            });
+        }
 
     },
 
     renderCellGroup(cellGroup, ctx, display) {
         cellGroup.forEach((cell) => {
-            this.colorCell(ctx, display, cell, "grey");
+            this.colorCell(ctx, display, cell, "rgba(200,200,200,0.8)");
         })
     },
 
@@ -110,6 +117,7 @@ export const renderer = {
                 };
             })
         });
+        this.drawOverlaidGeometry(ctx, display);
         this.drawAgents(ctx, world);
     },
 
@@ -122,11 +130,9 @@ export const renderer = {
     },
 
     drawAgents(ctx, world) {
-        console.log("HEY")
         if (world.agents) {
-            console.log("YEP")
             world.agents.forEach((agent) => {
-                this.plotPoint(agent.pos, ctx)
+                agent.draw(ctx);
             })
         }
     },
