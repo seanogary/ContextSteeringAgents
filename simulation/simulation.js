@@ -11,22 +11,14 @@ export const simulation = {
         renderer.drawGrid(ctx, display);
         renderer.drawAgents(ctx, display ,world);
         this.numFrames += 1;
-        // this.print();
-    },
-
-    print() {
-        console.log(new Date());
-        console.log(`${this.numFrames}\r`);
     },
 
     start() {
-        console.log("SIMULATION STARTED");
-        console.clear();
         this.numFrames = 0;
         renderer.overlaidGeometry.cellGroup = [];
     },
 
     stop() {
-        console.log("SIMULATION STOPPED");
+        // ???
     }, 
 }

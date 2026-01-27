@@ -61,9 +61,7 @@ export const controls = {
     },
 
     registerModeSelection(mode) {
-        console.log(mode);
         this.activeMode = modeMap[mode];
-        console.log(this.activeMode);
         if (mode === "context-steering-agents") {
             renderer.overlaidGeometry.agentRays = {};
         }

@@ -1,14 +1,12 @@
 import { testHeight, testWidth } from '../constants.js';
 import { gcd } from '../core/rational.js';
-import { geometry } from '../core/geometry.js';
 import { world } from './world.js'
 import { deepEqual } from '../core/core.js';
-import { renderer } from '../simulation/renderer.js';
 
 const canvas = document.getElementById('canvas');
 export const ctx = canvas.getContext('2d')
 
-let res = 1
+let res = 5;
 export const display = {
     canvas: null, /// canvas.getContext('2d'),
     resolution: null,
