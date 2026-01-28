@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* limit body to viewport to avoid scrolling */
+    background-color: rgb(51, 51, 51);
 }
 
 h1 {
@@ -20,7 +21,7 @@ h1 {
 
 canvas {
     display: block;
-    border: 2px solid red;
+    border: 2px solid grey;
     /* Fixed, non-flexing canvas so opening devtools or resizing the window
        won't change its client size. Matches the CSS size used in resizeCanvas(). */
     flex: 0 0 auto;

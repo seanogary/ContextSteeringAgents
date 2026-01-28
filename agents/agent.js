@@ -3,7 +3,8 @@ import { display } from "../world/display.js";
 import { world } from "../world/world.js";
 import { DDA } from "../core/dda.js";
 import { renderer } from "../simulation/renderer.js";
-import { lerpAngle } from "../core/core.js";
+import { lerpAngle, lerp } from "../core/core.js";
+import { arraySubtract } from "../core/core.js";
 
 const default_config = {
     danger: true,
@@ -54,14 +55,38 @@ export class SteeringAgent {
         if (this.pos.y + this.height < 0) this.pos.y = display.height();
     }
 
-    updateVelocity(config) {
-        const smoothingFactor = 0.2;
+    updateVelocity() {
+        const smoothingFactor = 0.1;
+        const { angle, speed } = this.calculateSteeringVector();
+        if (speed == 0) speed = 1;
+        console.log(speed);
+        const new_angle = lerpAngle(Math.atan2(this.vel.y, this.vel.x), angle, smoothingFactor);
+        const new_velocity = lerp(this.vel.x**2 + this.vel.y**2, speed, 0.01);
+        console.log(`new_velocity: ${new_velocity}`);
+        this.vel = {x: new_velocity*Math.cos(new_angle), y: new_velocity*Math.sin(new_angle)};
+        this.angle = Math.atan2(this.vel.y, this.vel.x);
+
+    }
+
+    calculateSteeringVector() {
+        if (this.config.interest) {
+            const combinedMap = arraySubtract(this.interestMap, this.dangerMap);
+            const maxValue = Math.max(...combinedMap);
+            if (maxValue > 0) 
+                return {
+            angle: this.receptors[this.combinedMap.indexOf(maxValue)].angle + this.angle,
+            speed: this.config.interest[this.combinedMap.indexOf(maxValue)],
+            }
+        }
+
         const minValue = Math.min(...this.dangerMap);
-        const receptorDir = this.receptors[this.dangerMap.indexOf(minValue)].angle + Math.atan2(
-            this.vel.y, this.vel.x
-        );
-        const angle = lerpAngle(Math.atan2(this.vel.y, this.vel.x), receptorDir, smoothingFactor);
-        this.vel = {x: Math.cos(angle), y: Math.sin(angle)};
+        let speed = 1*this.dangerMap[this.dangerMap.indexOf(minValue)]
+        speed = 10;
+        console.log(`speed: ${speed <= 0.2}`)
+        return {
+            angle: this.receptors[this.dangerMap.indexOf(minValue)].angle + this.angle,
+            speed: speed,
+        }
     }
 
     updateContext() {

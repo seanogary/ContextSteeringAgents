@@ -44,3 +44,14 @@ export function lerpAngle(start, end, t) {
     while (diff < -Math.PI) diff += 2 * Math.PI;
     return start + diff * t;
 }
+
+export function arraySubtract(arr1, arr2) { 
+    if (arr1.length !== arr2.length) {
+        throw new Error("Arrays must be of the same length");
+    }
+    return arr1.map((val, idx) => val - arr2[idx]);
+}
+
+export function lerp(start, end, t) {
+  return start + (end - start) * t;
+}

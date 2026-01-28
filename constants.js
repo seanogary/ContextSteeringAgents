@@ -3,7 +3,7 @@ export const psi_default = (angle) => {
 }
 
 export const g_default = (distance) => {
-    const maxRange = 5; // tiles
+    const maxRange = 20; // tiles
     return Math.max(0, 1 - distance / maxRange);
 }
 
