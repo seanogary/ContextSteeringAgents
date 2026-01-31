@@ -52,6 +52,13 @@ export function arraySubtract(arr1, arr2) {
     return arr1.map((val, idx) => val - arr2[idx]);
 }
 
+export function vectorAdd(vec1, vec2) {
+    return {
+        x: vec1.x + vec2.x,
+        y: vec1.y + vec2.y
+    };
+}
+
 export function lerp(start, end, t) {
   return start + (end - start) * t;
 }

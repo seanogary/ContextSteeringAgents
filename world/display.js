@@ -6,7 +6,7 @@ import { deepEqual } from '../core/core.js';
 const canvas = document.getElementById('canvas');
 export const ctx = canvas.getContext('2d')
 
-let res = 1;
+let res = 6;
 export const display = {
     canvas: null, /// canvas.getContext('2d'),
     resolution: null,

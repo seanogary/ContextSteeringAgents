@@ -3,8 +3,8 @@ import { display } from "../world/display.js";
 import { world } from "../world/world.js";
 import { DDA } from "../core/dda.js";
 import { renderer } from "../simulation/renderer.js";
-import { lerpAngle, lerp } from "../core/core.js";
-import { arraySubtract } from "../core/core.js";
+import { lerpAngle, lerp, arraySubtract, vectorAdd } from "../core/core.js";
+import { contextSteering } from "./steering.js";
 
 const default_config = {
     danger: true,
@@ -15,6 +15,7 @@ const default_config = {
 }
 
 const default_vel = {x: 1, y: 0};
+const ANGULAR_WINDOW = Math.PI;
 
 export class SteeringAgent {
     constructor(
@@ -23,7 +24,7 @@ export class SteeringAgent {
         vel = default_vel,
         size = 10, 
         color = 'rgb(200,0,0)', 
-        numReceptors = 8, 
+        numReceptors = 16, 
         config = default_config
     ){
         this.agentId = Math.random().toString(36).substring(2, 15);
@@ -34,10 +35,11 @@ export class SteeringAgent {
         this.height = size;
         this.color = color;
         this.numReceptors = numReceptors;
+        const step = ANGULAR_WINDOW / numReceptors;
         this.receptors = [...Array(numReceptors).keys()].map(el => ({
-            angle: el * (2*Math.PI / numReceptors), // angle relative to agent
-            angularSensitivity: psi_default, // angular sensitivity
-            radialSensitivity: g_default // radial sensitivity
+            angle: (el - (numReceptors - 1) / 2) * step,
+            angularSensitivity: psi_default,
+            radialSensitivity: g_default
         }))
         this.dangerMap = Array(numReceptors).fill(0);
         this.interestMap = Array(numReceptors).fill(0);
@@ -56,13 +58,19 @@ export class SteeringAgent {
     }
 
     updateVelocity() {
-        const smoothingFactor = 0.1;
-        const { angle, speed } = this.calculateSteeringVector();
+        const proposedDir = contextSteering.linearWeightedAggregation(this.dangerMap, this.receptors, this.angle);
+        console.log("CURRVEL: ")
+        console.log(this.vel);
+        this.vel = contextSteering.interpolateNewVector(proposedDir, this.vel);
+        this.angle = Math.atan2(this.vel.y, this.vel.x);
+        console.log(this.vel, this.angle)
+        // const { angle, speed } = this.calculateSteeringVector();
+        return 
+        // interpolation / updating velocity post proposal
         if (speed == 0) speed = 1;
-        console.log(speed);
+        const smoothingFactor = 0.1;
         const new_angle = lerpAngle(Math.atan2(this.vel.y, this.vel.x), angle, smoothingFactor);
         const new_velocity = lerp(this.vel.x**2 + this.vel.y**2, speed, 0.01);
-        console.log(`new_velocity: ${new_velocity}`);
         this.vel = {x: new_velocity*Math.cos(new_angle), y: new_velocity*Math.sin(new_angle)};
         this.angle = Math.atan2(this.vel.y, this.vel.x);
 
