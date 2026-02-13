@@ -46,17 +46,17 @@ world/
 
 ## Screen Recordings
 
+Grid Resizing:
 
 https://github.com/user-attachments/assets/eff915d0-9ee2-4c98-8239-6f809c257966
 
+DDA Visualization:
 
 https://github.com/user-attachments/assets/61a55b71-6be0-4487-a622-9883c2a350c5
 
+Ray Casting and Material Detection:
+
 https://github.com/user-attachments/assets/c11c2c2f-b038-46e9-8c3d-7ada427296de
-
-
-
-<!-- TO-DO: Add screen recordings -->
 
 ## Future Developments
 
