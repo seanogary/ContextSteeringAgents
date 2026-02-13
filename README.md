@@ -46,6 +46,14 @@ world/
 
 ## Screen Recordings
 
+
+https://github.com/user-attachments/assets/eff915d0-9ee2-4c98-8239-6f809c257966
+
+
+https://github.com/user-attachments/assets/61a55b71-6be0-4487-a622-9883c2a350c5
+
+
+
 <!-- TO-DO: Add screen recordings -->
 
 ## Future Developments
